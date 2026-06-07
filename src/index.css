@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --glass-bg: rgba(255, 248, 220, 0.04);
+    --glass-bg-hover: rgba(255, 248, 220, 0.08);
+    --glass-border: rgba(212, 175, 55, 0.18);
+    --glass-border-hover: rgba(212, 175, 55, 0.35);
+    --glow-gold: 0 0 30px rgba(212, 175, 55, 0.4);
+    --glow-saffron: 0 0 30px rgba(232, 100, 10, 0.4);
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    html, body, * {
+      cursor: none !important;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
+    font-size: 16px;
+  }
+
+  body {
+    background-color: #0A0500;
+    color: #FAF3E0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: auto;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  /* Minimum touch target size for accessibility */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+
+  ::selection {
+    background: rgba(212, 175, 55, 0.3);
+    color: #FFD700;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0A0500;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.4);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.7);
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    will-change: auto;
+  }
+
+  .glass-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-hover:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .glass-gold {
+    background: rgba(212, 175, 55, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.1);
+  }
+
+  .glass-saffron {
+    background: rgba(232, 100, 10, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(232, 100, 10, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(232, 100, 10, 0.1);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFD700 0%, #D4AF37 40%, #FF9F3A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-saffron {
+    background: linear-gradient(135deg, #FF9F3A 0%, #E8640A 50%, #C44D06 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden font-cinzel font-semibold tracking-wider px-6 py-3 sm:px-8 sm:py-4 rounded-full text-dark-500 transition-all duration-300;
+    background: linear-gradient(135deg, #FFD700 0%, #E8640A 100%);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-secondary {
+    @apply font-cinzel font-medium tracking-wider px-6 py-3 sm:px-8 sm:py-4 rounded-full transition-all duration-300;
+    background: transparent;
+    border: 1.5px solid rgba(212, 175, 55, 0.5);
+    color: #FFD700;
+    box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05);
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(212, 175, 55, 0.9);
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .section-bg {
+    background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 0% 100%, rgba(232, 100, 10, 0.04) 0%, transparent 50%),
+                #0A0500;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.3);
+  }
+
+  .ornament-line {
+    @apply flex items-center gap-4;
+  }
+
+  .ornament-line::before,
+  .ornament-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+  }
+
+  .section-padding {
+    @apply py-14 md:py-20 lg:py-28 px-4 sm:px-6 md:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto w-full;
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@layer utilities {
+  .backdrop-blur-glass {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .text-shadow-gold {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+
+  .bg-dark-gradient {
+    background: linear-gradient(180deg, #0A0500 0%, #150900 50%, #0A0500 100%);
+  }
+}
+
+/* Sacred geometry decorative animation */
+@keyframes sacredRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.sacred-spin {
+  animation: sacredRotate 40s linear infinite;
+}
+
+/* Particle float */
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+/* Smooth reveal */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-up {
+  animation: revealUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

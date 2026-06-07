@@ -1,0 +1,50 @@
+export const teachingsContent = {
+  badge: 'Daily Wisdom',
+  title: 'Teachings of',
+  titleAccent: 'Lord Ganesha',
+  subtitle: 'Sacred wisdom to guide your path — one divine teaching at a time.',
+  teachings: [
+    {
+      mantra: 'ఓం గం గణపతయే నమః',
+      title: 'The Remover of Obstacles',
+      text: 'Lord Ganesha teaches us that every obstacle is an opportunity in disguise. Invoke his grace at the beginning of every endeavor, and no challenge shall be insurmountable.',
+      category: 'Faith',
+      color: 'gold',
+    },
+    {
+      mantra: 'వక్రతుండ మహాకాయ సూర్యకోటి సమప్రభ',
+      title: 'The Wisdom of Patience',
+      text: 'As Ganesha\'s large ears symbolize, listen more than you speak. True wisdom comes from absorbing the world\'s lessons before offering your own voice.',
+      category: 'Wisdom',
+      color: 'saffron',
+    },
+    {
+      mantra: 'నిర్విఘ్నం కురు మే దేవ సర్వకార్యేషు సర్వదా',
+      title: 'Begin with Devotion',
+      text: 'Every morning is a gift. Begin it with a prayer to Ganesha — the first deity worshipped — and invite auspiciousness into all your actions throughout the day.',
+      category: 'Practice',
+      color: 'gold',
+    },
+    {
+      mantra: 'గజాననం భూత గణాది సేవితం',
+      title: 'The Power of Now',
+      text: 'Ganesha\'s broken tusk reminds us: sacrifice the unnecessary to write the greater story. Let go of what no longer serves your highest purpose.',
+      category: 'Growth',
+      color: 'saffron',
+    },
+    {
+      mantra: 'ఏకదంతం మహాకాయం లంబోదరం గజాననం',
+      title: 'Abundance and Gratitude',
+      text: 'The modak in Ganesha\'s hand represents the sweetness of life. Approach each day with gratitude and watch abundance flow naturally into your world.',
+      category: 'Gratitude',
+      color: 'gold',
+    },
+    {
+      mantra: 'వినాయక విఘ్నరాజ విశ్వప్రియ మనోమయ',
+      title: 'Strength in Gentleness',
+      text: 'The mouse beneath Ganesha\'s feet teaches us that the most powerful forces control the smallest impulses. Master your mind, and you master the universe.',
+      category: 'Strength',
+      color: 'saffron',
+    },
+  ],
+}
