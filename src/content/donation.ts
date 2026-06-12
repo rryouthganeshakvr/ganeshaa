@@ -43,7 +43,7 @@ export const donationContent = {
     ifscCode: 'XXXX0XXXXXX',
     bankName: 'State Bank of India',
     branch: 'Kovvur Branch',
-    upiId: 'rryganeshakvr@ibl',
+    upiId: import.meta.env.VITE_UPI_ID as string,
   },
   qrNote: 'Scan to pay via UPI',
   disclaimer: 'All donations go directly to Lord Ganesha\'s celebrations and community service. For receipts and queries, contact us at rryouthganeshakvr@gmail.com',

@@ -1,6 +1,46 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { heroContent } from '../../content/hero'
 import { staggerContainer, fadeInUp, fadeInDown, blurIn, scaleIn } from '../../utils/animations'
+
+function CountUp({ target, suffix, duration = 1800 }: { target: number; suffix: string; duration?: number }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    el.textContent = `0${suffix}`
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true
+          const start = performance.now()
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1)
+            const eased = 1 - Math.pow(1 - progress, 4)
+            el.textContent = `${Math.round(eased * target)}${suffix}`
+            if (progress < 1) requestAnimationFrame(tick)
+          }
+          requestAnimationFrame(tick)
+        }
+      },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, suffix, duration])
+
+  return (
+    <p
+      ref={ref}
+      className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-gradient-gold leading-tight tabular-nums"
+      style={{ willChange: 'transform', contain: 'strict', minWidth: '3ch', minHeight: '1.2em' }}
+    >
+      0{suffix}
+    </p>
+  )
+}
 
 const SacredMandala = () => (
   <svg
@@ -198,13 +238,11 @@ export function Hero() {
           {/* Stats */}
           <motion.div
             variants={scaleIn}
-            className="glass rounded-3xl p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-lg mx-auto"
+            className="glass rounded-3xl p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 w-full max-w-lg mx-auto"
           >
             {heroContent.floatingStats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-gradient-gold leading-tight">
-                  {stat.value}
-                </p>
+              <div key={i} className="text-center overflow-hidden">
+                <CountUp target={stat.num} suffix={stat.suffix} duration={900 + i * 200} />
                 <p className="font-inter text-[10px] sm:text-xs text-ivory-600 tracking-wide mt-1">{stat.label}</p>
               </div>
             ))}

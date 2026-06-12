@@ -76,38 +76,37 @@
 @layer components {
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    will-change: auto;
   }
 
   .glass-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   }
 
   .glass-hover:hover {
     background: var(--glass-bg-hover);
     border-color: var(--glass-border-hover);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(212, 175, 55, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
   }
 
   .glass-gold {
     background: rgba(212, 175, 55, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(212, 175, 55, 0.25);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 16px rgba(212, 175, 55, 0.08);
   }
 
   .glass-saffron {
     background: rgba(232, 100, 10, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(232, 100, 10, 0.25);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(232, 100, 10, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 16px rgba(232, 100, 10, 0.08);
   }
 
   .text-gradient-gold {
@@ -215,6 +214,12 @@
   .bg-dark-gradient {
     background: linear-gradient(180deg, #0A0500 0%, #150900 50%, #0A0500 100%);
   }
+}
+
+/* Orb gentle float — CSS animation is cheaper than framer-motion for always-on loops */
+@keyframes orbFloat {
+  from { transform: translate(-50%, -50%) translateY(0px); }
+  to   { transform: translate(-50%, -50%) translateY(-24px); }
 }
 
 /* Sacred geometry decorative animation */

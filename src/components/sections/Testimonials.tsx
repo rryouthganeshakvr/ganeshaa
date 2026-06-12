@@ -21,14 +21,16 @@ export function Testimonials() {
   const { testimonials } = testimonialsContent
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
+    if (isPaused) return
     const timer = setInterval(() => {
       setDirection(1)
       setCurrent((c) => (c + 1) % testimonials.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [testimonials.length])
+  }, [testimonials.length, isPaused])
 
   const goTo = (idx: number) => {
     setDirection(idx > current ? 1 : -1)
@@ -55,9 +57,7 @@ export function Testimonials() {
     <section id="testimonials" className="section-padding relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at 50% 100%, rgba(232,100,10,0.06) 0%, transparent 55%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse at 50% 100%, rgba(232,100,10,0.06) 0%, transparent 55%)' }}
       />
 
       <div className="container-custom relative z-10">
@@ -68,9 +68,13 @@ export function Testimonials() {
           subtitle={testimonialsContent.subtitle}
         />
 
-        {/* Main slider */}
         <div className="max-w-3xl mx-auto mb-10">
-          <div className="relative overflow-hidden">
+          {/* Pause on hover — stops auto-rotate while reading */}
+          <div
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={current}
@@ -82,20 +86,16 @@ export function Testimonials() {
                 transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 className="glass-gold rounded-3xl p-8 md:p-12 text-center"
               >
-                {/* Quote mark */}
                 <p className="font-cinzel text-6xl text-gold-500/40 mb-2 leading-none">❝</p>
 
-                {/* Sacred symbols */}
                 <div className="flex justify-center mb-4">
                   <SacredRating count={testimonials[current].stars} />
                 </div>
 
-                {/* Text */}
                 <p className="font-cormorant text-xl md:text-2xl text-ivory-300 italic leading-relaxed mb-8">
                   {testimonials[current].text}
                 </p>
 
-                {/* Author */}
                 <div className="flex items-center justify-center gap-4">
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center font-cinzel font-bold text-lg text-dark-500 ${
@@ -113,6 +113,11 @@ export function Testimonials() {
                     </p>
                   </div>
                 </div>
+
+                {/* Pause indicator */}
+                {isPaused && (
+                  <p className="mt-4 text-ivory-700 text-xs font-inter tracking-wider">⏸ Auto-play paused</p>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -121,6 +126,7 @@ export function Testimonials() {
           <div className="flex items-center justify-center gap-4 mt-8">
             <button
               onClick={prev}
+              aria-label="Previous testimonial"
               className="w-10 h-10 glass rounded-full flex items-center justify-center text-gold-400 hover:glass-gold transition-all duration-300"
             >
               ‹
@@ -130,6 +136,7 @@ export function Testimonials() {
                 <button
                   key={i}
                   onClick={() => goTo(i)}
+                  aria-label={`Go to testimonial ${i + 1}`}
                   className={`transition-all duration-300 rounded-full ${
                     i === current
                       ? 'w-6 h-2 bg-gradient-to-r from-gold-400 to-saffron-600'
@@ -140,13 +147,13 @@ export function Testimonials() {
             </div>
             <button
               onClick={next}
+              aria-label="Next testimonial"
               className="w-10 h-10 glass rounded-full flex items-center justify-center text-gold-400 hover:glass-gold transition-all duration-300"
             >
               ›
             </button>
           </div>
         </div>
-
       </div>
     </section>
   )

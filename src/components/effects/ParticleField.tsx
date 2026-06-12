@@ -10,59 +10,81 @@ interface Particle {
   life: number
   maxLife: number
   symbol: string
+  colorIdx: number
 }
 
-const SYMBOLS = ['ఓం', '卐', '✦', '◆', '●', '✧']
+const SYMBOLS = ['ఓం', '✦', '◆', '✧']
 const COLORS = [
-  'rgba(212, 175, 55,',
-  'rgba(255, 215, 0,',
-  'rgba(232, 100, 10,',
-  'rgba(255, 159, 58,',
+  'rgba(212,175,55,',
+  'rgba(255,215,0,',
+  'rgba(232,100,10,',
 ]
+
+const MAX_PARTICLES = 8
 
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animFrameRef = useRef<number>(0)
   const particlesRef = useRef<Particle[]>([])
+  const frameRef = useRef(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
+    let w = window.innerWidth
+    let h = window.innerHeight
+    canvas.width = w
+    canvas.height = h
+
+    let resizeTimer: ReturnType<typeof setTimeout>
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        w = window.innerWidth
+        h = window.innerHeight
+        canvas.width = w
+        canvas.height = h
+      }, 200)
     }
-    resize()
-    window.addEventListener('resize', resize)
+    window.addEventListener('resize', resize, { passive: true })
 
     const createParticle = (): Particle => ({
-      x: Math.random() * canvas.width,
-      y: canvas.height + 20,
-      vx: (Math.random() - 0.5) * 0.6,
-      vy: -(Math.random() * 0.8 + 0.3),
-      size: Math.random() * 14 + 8,
+      x: Math.random() * w,
+      y: h + 20,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: -(Math.random() * 0.6 + 0.25),
+      size: Math.random() * 12 + 7,
       opacity: 0,
       life: 0,
-      maxLife: Math.random() * 200 + 150,
+      maxLife: Math.random() * 180 + 140,
       symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      colorIdx: Math.floor(Math.random() * COLORS.length),
     })
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 5; i++) {
       const p = createParticle()
-      p.y = Math.random() * canvas.height
+      p.y = Math.random() * h
       p.life = Math.random() * p.maxLife
       particlesRef.current.push(p)
     }
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      animFrameRef.current = requestAnimationFrame(draw)
+      frameRef.current++
+      // ~30fps: skip every other frame
+      if (frameRef.current % 2 !== 0) return
 
-      if (particlesRef.current.length < 15 && Math.random() < 0.02) {
+      ctx.clearRect(0, 0, w, h)
+
+      if (particlesRef.current.length < MAX_PARTICLES && Math.random() < 0.015) {
         particlesRef.current.push(createParticle())
       }
+
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
 
       particlesRef.current = particlesRef.current.filter((p) => {
         p.life++
@@ -78,21 +100,16 @@ export function ParticleField() {
           p.opacity = 1
         }
 
-        const colorIdx = Math.floor(p.life / 30) % COLORS.length
-        const color = COLORS[colorIdx]
-        ctx.save()
-        ctx.globalAlpha = p.opacity * 0.5
+        const alpha = p.opacity * 0.45
+        ctx.globalAlpha = alpha
         ctx.font = `${p.size}px serif`
-        ctx.fillStyle = `${color} ${p.opacity * 0.5})`
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
+        ctx.fillStyle = `${COLORS[p.colorIdx]}${alpha})`
         ctx.fillText(p.symbol, p.x, p.y)
-        ctx.restore()
 
         return p.life < p.maxLife && p.y > -30
       })
 
-      animFrameRef.current = requestAnimationFrame(draw)
+      ctx.globalAlpha = 1
     }
 
     draw()
@@ -100,6 +117,7 @@ export function ParticleField() {
     return () => {
       window.removeEventListener('resize', resize)
       cancelAnimationFrame(animFrameRef.current)
+      clearTimeout(resizeTimer)
     }
   }, [])
 
@@ -107,7 +125,7 @@ export function ParticleField() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.7 }}
+      style={{ opacity: 0.6 }}
     />
   )
 }

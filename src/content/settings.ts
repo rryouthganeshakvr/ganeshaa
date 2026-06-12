@@ -28,7 +28,6 @@ export const settings = {
     { label: 'Our Story', href: '#about' },
     { label: 'Celebrations', href: '#events' },
     { label: 'Gallery', href: '#gallery' },
-    { label: 'Seva', href: '#donation' },
     { label: 'Contact', href: '#contact' },
   ],
 }

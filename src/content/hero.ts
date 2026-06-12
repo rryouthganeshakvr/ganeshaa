@@ -14,9 +14,9 @@ export const heroContent = {
     href: '#donation',
   },
   floatingStats: [
-    { value: '21 Years', label: 'Devotion & Celebration' },
-    { value: '98 Days', label: 'to Chaturthi' },
-    { value: '5000+', label: 'Devotees United' },
+    { num: new Date().getMonth() >= 8 ? new Date().getFullYear() - 2004 : new Date().getFullYear() - 2005, suffix: ' Years', label: 'Devotion & Celebration' },
+    { num: 100, suffix: '+', label: 'Volunteers' },
+    { num: 4000, suffix: '+', label: 'Devotees United' },
   ],
   scrollLabel: 'Scroll to Explore',
 }

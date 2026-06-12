@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { aboutContent } from '../../content/about'
 import { SectionTitle } from '../ui/SectionTitle'
@@ -5,6 +6,8 @@ import { GlassCard } from '../ui/GlassCard'
 import { staggerContainer, fadeInLeft, fadeInRight, fadeInUp } from '../../utils/animations'
 
 export function About() {
+  const [imgLoaded, setImgLoaded] = useState(false)
+
   return (
     <section id="about" className="section-padding section-bg relative overflow-hidden">
       {/* Decorative background */}
@@ -75,7 +78,8 @@ export function About() {
                   src="/images/idol-pandal-full.jpg"
                   alt="Ganesha at Round Ramalayam Kovvur"
                   className="w-full h-full object-cover object-center"
-                  style={{ aspectRatio: '3/4' }}
+                  style={{ aspectRatio: '3/4', opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.8s ease' }}
+                  onLoad={() => setImgLoaded(true)}
                 />
                 {/* Bottom caption overlay */}
                 <div className="absolute bottom-0 left-0 right-0 px-6 py-5"

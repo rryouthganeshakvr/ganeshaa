@@ -44,9 +44,9 @@ export const eventsContent = {
   events: [
     {
       id: 1,
-      title: 'Ganesh Chaturthi 2025',
+      title: 'Ganesh Chaturthi 2026',
       subtitle: 'Grand Annual Celebration',
-      date: 'August 27, 2025',
+      date: 'September 14, 2026',
       time: '6:00 AM — 10:00 PM',
       duration: '18 Days',
       location: 'Near Water Tank, Kovvur',

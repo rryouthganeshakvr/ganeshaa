@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { settings } from '../../content/settings'
 
-export function Navigation() {
+interface Props {
+  onOpenSeva: () => void
+}
+
+export function Navigation({ onOpenSeva }: Props) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
@@ -32,11 +36,12 @@ export function Navigation() {
 
   return (
     <>
+      <div className="fixed top-3 left-0 right-0 flex justify-center z-50 pointer-events-none">
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        className="fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-auto"
+        className="pointer-events-auto w-auto"
       >
         <div
           className={`glass rounded-2xl px-4 sm:px-6 flex items-center justify-center gap-1 sm:gap-2 transition-all duration-500 ${
@@ -84,12 +89,12 @@ export function Navigation() {
             })}
           </ul>
 
-          {/* Donate — centered in row */}
+          {/* Serve with Love — opens Seva modal */}
           <button
-            onClick={() => scrollTo('#donation')}
+            onClick={onOpenSeva}
             className="hidden sm:block btn-primary text-xs sm:text-sm py-2 px-3 sm:px-5 ml-1 sm:ml-2"
           >
-            Donate Now
+            Serve with Love
           </button>
 
           {/* Hamburger — mobile only */}
@@ -106,6 +111,7 @@ export function Navigation() {
           </button>
         </div>
       </motion.nav>
+      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -145,8 +151,8 @@ export function Navigation() {
                 })}
               </ul>
               <div className="pt-3 mt-2 border-t border-gold-900/30">
-                <button onClick={() => scrollTo('#donation')} className="w-full btn-primary text-center py-3">
-                  Donate Now
+                <button onClick={onOpenSeva} className="w-full btn-primary text-center py-3">
+                  Serve with Love
                 </button>
               </div>
             </motion.div>

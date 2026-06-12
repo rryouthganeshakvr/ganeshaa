@@ -8,8 +8,8 @@ export function CustomCursor() {
   const mouseX = useMotionValue(-300)
   const mouseY = useMotionValue(-300)
 
-  const x = useSpring(mouseX, { damping: 26, stiffness: 200, mass: 0.6 })
-  const y = useSpring(mouseY, { damping: 26, stiffness: 200, mass: 0.6 })
+  const x = useSpring(mouseX, { damping: 28, stiffness: 220, mass: 0.5 })
+  const y = useSpring(mouseY, { damping: 28, stiffness: 220, mass: 0.5 })
 
   useEffect(() => {
     const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
@@ -39,7 +39,7 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Outer soft divine glow */}
+      {/* Soft glow halo — scale instead of width/height (GPU-only, no layout) */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none rounded-full"
         style={{
@@ -47,19 +47,20 @@ export function CustomCursor() {
           y,
           translateX: '-50%',
           translateY: '-50%',
+          width: 90,
+          height: 90,
           zIndex: 9990,
-          background: 'radial-gradient(circle, rgba(212,175,55,0.18) 0%, rgba(232,100,10,0.08) 40%, transparent 70%)',
-          filter: 'blur(18px)',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.18) 0%, rgba(232,100,10,0.07) 50%, transparent 70%)',
+          willChange: 'transform',
         }}
         animate={{
-          width: isHovering ? 160 : 120,
-          height: isHovering ? 160 : 120,
-          opacity: isHovering ? 1 : 0.75,
+          scale: isHovering ? 1.44 : 1,
+          opacity: isHovering ? 1 : 0.7,
         }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
       />
 
-      {/* Inner bright glow core */}
+      {/* Bright center spark — scale only, static box-shadow */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none rounded-full"
         style={{
@@ -67,37 +68,14 @@ export function CustomCursor() {
           y,
           translateX: '-50%',
           translateY: '-50%',
+          width: 7,
+          height: 7,
           zIndex: 9991,
-          background: 'radial-gradient(circle, rgba(255,215,0,0.55) 0%, rgba(212,175,55,0.28) 45%, transparent 70%)',
-          filter: 'blur(6px)',
+          background: 'radial-gradient(circle, #fff 0%, #FFD700 60%, transparent 100%)',
+          boxShadow: '0 0 8px 2px rgba(255,215,0,0.6)',
+          willChange: 'transform',
         }}
-        animate={{
-          width: isHovering ? 52 : 36,
-          height: isHovering ? 52 : 36,
-          opacity: isHovering ? 1 : 0.85,
-        }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-      />
-
-      {/* Tiny bright center spark */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none rounded-full"
-        style={{
-          x,
-          y,
-          translateX: '-50%',
-          translateY: '-50%',
-          zIndex: 9992,
-          background: 'radial-gradient(circle, #fff 0%, #FFD700 50%, rgba(212,175,55,0) 100%)',
-          boxShadow: isHovering
-            ? '0 0 16px 4px rgba(255,215,0,0.9), 0 0 32px 8px rgba(212,175,55,0.5)'
-            : '0 0 10px 3px rgba(255,215,0,0.75), 0 0 22px 6px rgba(212,175,55,0.35)',
-        }}
-        animate={{
-          width: isHovering ? 12 : 8,
-          height: isHovering ? 12 : 8,
-          opacity: 1,
-        }}
+        animate={{ scale: isHovering ? 1.57 : 1 }}
         transition={{ duration: 0.15, ease: 'easeOut' }}
       />
     </>

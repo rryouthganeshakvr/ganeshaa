@@ -46,19 +46,40 @@ const renderIcon = (icon: string) => {
 }
 
 export function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const mailtoLink = `mailto:${settings.contact.email}?subject=${encodeURIComponent(form.subject || 'Contact from website')}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`
-    window.location.href = mailtoLink
+    setSubmitting(true)
+    setError(false)
+
+    const appsScriptUrl = import.meta.env.VITE_APPS_SCRIPT_URL
+    if (appsScriptUrl) {
+      const params = new URLSearchParams()
+      params.append('type', 'enquiry')
+      params.append('name', form.name.trim())
+      params.append('phone', form.phone.trim())
+      params.append('email', form.email.trim())
+      params.append('subject', form.subject.trim())
+      params.append('message', form.message.trim())
+      try {
+        await fetch(`${appsScriptUrl}?${params.toString()}`, { method: 'GET', mode: 'no-cors' })
+      } catch {
+        setError(true)
+      }
+    }
+
+    setSubmitting(false)
     setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 4000)
+    setTimeout(() => setSubmitted(false), 5000)
+    setForm({ name: '', phone: '', email: '', subject: '', message: '' })
   }
 
   const inputClass =
@@ -183,6 +204,20 @@ export function Contact() {
                       className={inputClass}
                     />
                     <input
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      placeholder="Mobile Number *"
+                      required
+                      maxLength={10}
+                      inputMode="numeric"
+                      pattern="[6-9][0-9]{9}"
+                      title="Enter a valid 10-digit Indian mobile number"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
                       name="email"
                       type="email"
                       value={form.email}
@@ -191,14 +226,14 @@ export function Contact() {
                       required
                       className={inputClass}
                     />
+                    <input
+                      name="subject"
+                      value={form.subject}
+                      onChange={handleChange}
+                      placeholder={contactContent.form.subjectPlaceholder}
+                      className={inputClass}
+                    />
                   </div>
-                  <input
-                    name="subject"
-                    value={form.subject}
-                    onChange={handleChange}
-                    placeholder={contactContent.form.subjectPlaceholder}
-                    className={inputClass}
-                  />
                   <textarea
                     name="message"
                     value={form.message}
@@ -208,11 +243,14 @@ export function Contact() {
                     rows={5}
                     className={`${inputClass} resize-none`}
                   />
-                  <button type="submit" className="w-full btn-primary">
-                    {contactContent.form.submitLabel}
+                  {error && (
+                    <p className="text-red-400 text-xs text-center font-inter">Something went wrong. Please try again.</p>
+                  )}
+                  <button type="submit" disabled={submitting} className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                    {submitting ? 'Sending…' : contactContent.form.submitLabel}
                   </button>
                   <p className="text-ivory-700 text-xs font-inter text-center">
-                    Submitting opens your email client to send directly
+                    Your message is sent directly to our team.
                   </p>
                 </form>
               )}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Navigation } from './components/layout/Navigation'
 import { Footer } from './components/layout/Footer'
@@ -6,7 +7,7 @@ import { About } from './components/sections/About'
 import { Teachings } from './components/sections/Teachings'
 import { Events } from './components/sections/Events'
 import { Gallery } from './components/sections/Gallery'
-import { Donation } from './components/sections/Donation'
+import { SevaModal } from './components/sections/SevaModal'
 import { Testimonials } from './components/sections/Testimonials'
 import { Contact } from './components/sections/Contact'
 import { ParticleField } from './components/effects/ParticleField'
@@ -15,6 +16,8 @@ import { ScrollProgress } from './components/effects/ScrollProgress'
 import { CustomCursor } from './components/effects/CustomCursor'
 
 function App() {
+  const [sevaOpen, setSevaOpen] = useState(false)
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -29,22 +32,24 @@ function App() {
       <CustomCursor />
 
       {/* Navigation */}
-      <Navigation />
+      <Navigation onOpenSeva={() => setSevaOpen(true)} />
 
       {/* Main content */}
-      <main>
+      <main id="main-content">
         <Hero />
         <About />
         <Teachings />
         <Events />
         <Gallery />
-        <Donation />
         <Testimonials />
         <Contact />
       </main>
 
       {/* Footer */}
       <Footer />
+
+      {/* Seva modal — opened by "Serve with Love" button */}
+      <SevaModal open={sevaOpen} onClose={() => setSevaOpen(false)} />
     </motion.div>
   )
 }
