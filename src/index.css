@@ -216,6 +216,11 @@
   }
 }
 
+@keyframes splashBar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 /* Orb gentle float — CSS animation is cheaper than framer-motion for always-on loops */
 @keyframes orbFloat {
   from { transform: translate(-50%, -50%) translateY(0px); }

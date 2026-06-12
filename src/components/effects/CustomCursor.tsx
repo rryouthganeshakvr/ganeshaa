@@ -49,7 +49,7 @@ export function CustomCursor() {
           translateY: '-50%',
           width: 90,
           height: 90,
-          zIndex: 9990,
+          zIndex: 99999,
           background: 'radial-gradient(circle, rgba(212,175,55,0.18) 0%, rgba(232,100,10,0.07) 50%, transparent 70%)',
           willChange: 'transform',
         }}
@@ -70,7 +70,7 @@ export function CustomCursor() {
           translateY: '-50%',
           width: 7,
           height: 7,
-          zIndex: 9991,
+          zIndex: 100000,
           background: 'radial-gradient(circle, #fff 0%, #FFD700 60%, transparent 100%)',
           boxShadow: '0 0 8px 2px rgba(255,215,0,0.6)',
           willChange: 'transform',

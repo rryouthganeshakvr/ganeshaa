@@ -11,8 +11,6 @@ const GmailIcon = () => (
 )
 
 export function Footer() {
-  const year = new Date().getFullYear()
-
   const scrollTo = (href: string) => {
     const el = document.getElementById(href.replace('#', ''))
     if (el) el.scrollIntoView({ behavior: 'smooth' })
@@ -72,15 +70,24 @@ export function Footer() {
             <ul className="space-y-2 text-xs text-ivory-600">
               <li className="flex gap-2">
                 <span className="text-gold-500 mt-0.5 flex-shrink-0">📍</span>
-                <span>{settings.contact.fullAddress}</span>
-              </li>
-              <li className="flex gap-2 items-start">
-                <GmailIcon />
                 <a
-                  href={`mailto:${settings.contact.email}`}
-                  className="hover:text-gold-400 transition-colors break-all"
+                  href="https://www.google.com/maps/search/?api=1&query=Round+Ramalayam+Kovvur+West+Godavari+Andhra+Pradesh+534350"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold-400 transition-colors"
                 >
-                  {settings.contact.email}
+                  {settings.contact.fullAddress}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&to=${settings.contact.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2 hover:text-gold-400 transition-colors group"
+                >
+                  <GmailIcon />
+                  <span className="break-all">{settings.contact.email}</span>
                 </a>
               </li>
             </ul>
@@ -135,8 +142,8 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-ivory-700">
-          <p className="font-inter">© {year} {settings.organization}. All rights reserved.</p>
-          <p className="font-cormorant text-sm text-gold-700 italic">{settings.siteTagline}</p>
+          <p className="font-inter">© 2026 {settings.organization}. All rights reserved.</p>
+          <p className="font-cormorant text-sm text-gold-400 italic">{settings.siteTagline}</p>
         </div>
       </div>
     </footer>

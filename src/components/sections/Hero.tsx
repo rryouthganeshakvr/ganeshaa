@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { heroContent } from '../../content/hero'
+import { countdownContent } from '../../content/countdown'
 import { staggerContainer, fadeInUp, fadeInDown, blurIn, scaleIn } from '../../utils/animations'
 
 function CountUp({ target, suffix, duration = 1800 }: { target: number; suffix: string; duration?: number }) {
@@ -90,7 +91,39 @@ const FloatingDeco = ({ delay, x, y, size, idx }: { delay: number; x: string; y:
   </motion.div>
 )
 
-export function Hero() {
+export function Hero({ onOpenSeva }: { onOpenSeva?: () => void }) {
+  const getFestivalState = () => {
+    const now = Date.now()
+    const start = new Date(countdownContent.targetDate).getTime()
+    const end = new Date(countdownContent.festivalEndDate).getTime()
+    if (!countdownContent.enabled) return 'hidden'
+    if (now < start) return 'countdown'
+    if (now <= end) return 'active'
+    return 'hidden'
+  }
+
+  const [countdown, setCountdown] = useState(() => {
+    const diff = new Date(countdownContent.targetDate).getTime() - Date.now()
+    if (getFestivalState() !== 'countdown') return null
+    return { days: Math.floor(diff / 86400000), hours: Math.floor((diff / 3600000) % 24) }
+  })
+  const [festivalState, setFestivalState] = useState(getFestivalState)
+  const totalFestivalDays = Math.round((new Date(countdownContent.festivalEndDate).getTime() - new Date(countdownContent.targetDate).getTime()) / 86400000) + 1
+  const festivalDay = Math.min(Math.floor((Date.now() - new Date(countdownContent.targetDate).getTime()) / 86400000) + 1, totalFestivalDays)
+
+  useEffect(() => {
+    if (!countdownContent.enabled) return
+    const tick = () => {
+      const state = getFestivalState()
+      setFestivalState(state)
+      if (state !== 'countdown') { setCountdown(null); return }
+      const diff = new Date(countdownContent.targetDate).getTime() - Date.now()
+      setCountdown({ days: Math.floor(diff / 86400000), hours: Math.floor((diff / 3600000) % 24) })
+    }
+    const timer = setInterval(tick, 60000)
+    return () => clearInterval(timer)
+  }, [])
+
   const scrollTo = (href: string) => {
     const id = href.replace('#', '')
     const el = document.getElementById(id)
@@ -139,34 +172,64 @@ export function Hero() {
       <FloatingDeco delay={0.8} x="90%" y="65%" size={40} idx={3} />
       <FloatingDeco delay={2}   x="45%" y="88%" size={24} idx={4} />
 
-      {/* Top-left brand badge */}
-      <motion.div
-        initial={{ opacity: 0, x: -24 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        className="absolute top-[72px] sm:top-[76px] left-4 sm:left-6 z-20 flex items-center gap-2.5 glass-gold px-4 py-2.5 rounded-2xl"
-        style={{ boxShadow: '0 0 20px rgba(212,175,55,0.15)' }}
-      >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-sm flex-shrink-0 shadow-gold-sm">
-          ॐ
-        </div>
-        <div className="min-w-0">
-          <p className="font-cinzel font-bold text-gold-400 text-xs sm:text-sm leading-tight tracking-wide">
-            Round Ramalayam Youth
-          </p>
-          <p className="font-inter text-ivory-600 text-[9px] sm:text-[10px] tracking-widest">
-            KOVVUR · EST. 2004
-          </p>
-        </div>
-      </motion.div>
+      {/* Top badges row */}
+      <div className="absolute top-[72px] sm:top-[76px] left-2 right-2 sm:left-6 sm:right-6 z-20 flex items-center justify-between gap-2">
+        {/* Left: Brand */}
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          className="flex flex-1 sm:flex-none items-center gap-1.5 sm:gap-2.5 glass-gold px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl sm:w-[242px]"
+          style={{ boxShadow: '0 0 20px rgba(212,175,55,0.15)' }}
+        >
+          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-[10px] sm:text-sm flex-shrink-0">
+            ॐ
+          </div>
+          <div className="min-w-0">
+            <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide truncate">
+              Round Ramalayam Youth
+            </p>
+            <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest">
+              KOVVUR · EST. 2004
+            </p>
+          </div>
+        </motion.div>
 
-      {/* Top-right corner ornament */}
-      <div className="absolute top-24 right-8 w-20 h-20 opacity-20" style={{ transform: 'scaleX(-1)' }}>
-        <svg viewBox="0 0 80 80">
-          <path d="M0,0 L80,0 M80,0 L80,80" stroke="#D4AF37" strokeWidth="1.5" fill="none" />
-          <path d="M70,0 L70,30 L40,30" stroke="#D4AF37" strokeWidth="0.8" fill="none" />
-          <circle cx="70" cy="30" r="3" fill="#D4AF37" />
-        </svg>
+        {/* Right: Countdown / Festival active badge */}
+        {(festivalState === 'countdown' && countdown) || festivalState === 'active' ? (
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="flex flex-1 sm:flex-none items-center gap-1.5 sm:gap-2.5 glass-gold px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl sm:w-[242px]"
+            style={{ boxShadow: '0 0 20px rgba(212,175,55,0.15)' }}
+          >
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-[10px] sm:text-sm flex-shrink-0">
+              {festivalState === 'active' ? '🎉' : '⏳'}
+            </div>
+            <div className="min-w-0">
+              {festivalState === 'active' ? (
+                <>
+                  <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide">
+                    Celebrations!
+                  </p>
+                  <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest uppercase">
+                    Day {festivalDay} of {totalFestivalDays}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide tabular-nums">
+                    {countdown!.days}d · {String(countdown!.hours).padStart(2, '0')}h
+                  </p>
+                  <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest uppercase">
+                    To Chaturthi
+                  </p>
+                </>
+              )}
+            </div>
+          </motion.div>
+        ) : null}
       </div>
 
       {/* Main content */}
@@ -228,7 +291,7 @@ export function Hero() {
               {heroContent.primaryCta.label}
             </button>
             <button
-              onClick={() => scrollTo(heroContent.secondaryCta.href)}
+              onClick={() => onOpenSeva?.()}
               className="btn-secondary text-sm sm:text-base w-full sm:w-auto sm:min-w-[180px] text-center"
             >
               {heroContent.secondaryCta.label}

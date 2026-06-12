@@ -8,12 +8,13 @@ export const contactContent = {
       icon: '📍',
       title: 'Visit Us',
       lines: ['Near Water Tank, Round Ramalayam', 'Kovvur, West Godavari, Andhra Pradesh – 534350'],
+      href: 'https://www.google.com/maps/search/?api=1&query=Round+Ramalayam+Kovvur+West+Godavari+Andhra+Pradesh+534350',
     },
     {
       icon: 'gmail',
       title: 'Email Us',
       lines: ['rryouthganeshakvr@gmail.com'],
-      href: 'mailto:rryouthganeshakvr@gmail.com',
+      href: 'https://mail.google.com/mail/?view=cm&to=rryouthganeshakvr@gmail.com',
     },
     {
       icon: 'instagram',

@@ -4,9 +4,10 @@ import { settings } from '../../content/settings'
 
 interface Props {
   onOpenSeva: () => void
+  bannerShown?: boolean
 }
 
-export function Navigation({ onOpenSeva }: Props) {
+export function Navigation({ onOpenSeva, bannerShown = false }: Props) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
@@ -36,7 +37,7 @@ export function Navigation({ onOpenSeva }: Props) {
 
   return (
     <>
-      <div className="fixed top-3 left-0 right-0 flex justify-center z-50 pointer-events-none">
+      <div className="fixed left-0 right-0 flex justify-center z-50 pointer-events-none" style={{ top: bannerShown ? 52 : 12, transition: 'top 0.3s ease' }}>
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

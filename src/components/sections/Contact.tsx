@@ -112,31 +112,36 @@ export function Contact() {
             viewport={{ once: true }}
           >
             <motion.div variants={fadeInLeft} className="space-y-5 mb-8">
-              {contactContent.info.map((item, i) => (
-                <div key={i} className="glass rounded-2xl p-5 flex items-start gap-4 glass-hover">
-                  <div className="w-12 h-12 glass-gold rounded-xl flex items-center justify-center flex-shrink-0">
-                    {renderIcon(item.icon)}
-                  </div>
-                  <div>
-                    <p className="font-cinzel font-bold text-gold-400 text-sm mb-1">{item.title}</p>
-                    {item.lines.map((line, j) =>
-                      item.href ? (
-                        <a
-                          key={j}
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block text-ivory-400 hover:text-gold-400 transition-colors font-inter text-sm"
-                        >
-                          {line}
-                        </a>
-                      ) : (
+              {contactContent.info.map((item, i) => {
+                const inner = (
+                  <>
+                    <div className="w-12 h-12 glass-gold rounded-xl flex items-center justify-center flex-shrink-0">
+                      {renderIcon(item.icon)}
+                    </div>
+                    <div>
+                      <p className="font-cinzel font-bold text-gold-400 text-sm mb-1">{item.title}</p>
+                      {item.lines.map((line, j) => (
                         <p key={j} className="text-ivory-400 font-inter text-sm">{line}</p>
-                      )
-                    )}
+                      ))}
+                    </div>
+                  </>
+                )
+                return item.href ? (
+                  <a
+                    key={i}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="glass rounded-2xl p-5 flex items-start gap-4 glass-hover"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={i} className="glass rounded-2xl p-5 flex items-start gap-4 glass-hover">
+                    {inner}
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </motion.div>
 
 
@@ -161,7 +166,9 @@ export function Contact() {
                 <p className="font-cinzel text-xs text-ivory-500 group-hover:text-gold-400 transition-colors">YouTube</p>
               </a>
               <a
-                href={`mailto:${settings.contact.email}`}
+                href={`https://mail.google.com/mail/?view=cm&to=${settings.contact.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex-1 glass rounded-2xl p-4 text-center hover:glass-gold transition-all duration-300 group"
               >
                 <div className="flex justify-center mb-1"><GmailIcon className="w-6 h-6" /></div>
