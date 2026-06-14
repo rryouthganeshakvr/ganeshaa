@@ -27,7 +27,7 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: auto;
+    overscroll-behavior-y: none;
     font-size: 16px;
   }
 
@@ -38,9 +38,8 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overscroll-behavior: auto;
-    min-height: 100dvh;
-    min-height: 100vh;
+    overscroll-behavior: none;
+    min-height: 100svh;
   }
 
   /* Minimum touch target size for accessibility */
