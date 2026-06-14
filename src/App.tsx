@@ -41,7 +41,7 @@ function App() {
         initial={{ opacity: 0 }}
         animate={{ opacity: splashDone ? 1 : 0 }}
         transition={{ duration: 0.6 }}
-        className="relative bg-dark-500 text-ivory-300 min-h-svh"
+        className="relative bg-dark-500 text-ivory-300 min-h-screen"
       >
         {/* Background effects */}
         <ParticleField />

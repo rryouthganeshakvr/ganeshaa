@@ -133,7 +133,7 @@ export function Hero({ onOpenSeva }: { onOpenSeva?: () => void }) {
   return (
     <section
       id="home"
-      className="relative min-h-svh flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background photo */}
       <div className="absolute inset-0 z-0">

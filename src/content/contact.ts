@@ -25,8 +25,8 @@ export const contactContent = {
     {
       icon: 'youtube',
       title: 'YouTube',
-      lines: ['RRYOUTHGANESHAKVR'],
-      href: 'https://www.youtube.com/@RRYOUTHGANESHAKVR',
+      lines: ['ROUNDRAMALAYAMYOUTHGANESHA'],
+      href: 'https://www.youtube.com/@ROUNDRAMALAYAMYOUTHGANESHA',
     },
   ],
   festival: {
