@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { settings } from '../../content/settings'
 import { livestreamContent } from '../../content/livestream'
+import { darshanContent } from '../../content/darshan'
+import { scheduleContent } from '../../content/schedule'
 
 interface Props {
   onOpenSeva: () => void
@@ -12,20 +14,39 @@ export function Navigation({ onOpenSeva, bannerShown = false }: Props) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const scrollTargetRef = useRef<string | null>(null)
+  const programmaticScrollRef = useRef(false)
+  const programmaticTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const navLinks = [
-    ...settings.navLinks,
+    { label: 'Home', href: '#home' },
+    { label: 'Our Story', href: '#about' },
+    { label: 'Celebrations', href: '#events' },
+    ...(scheduleContent.enabled ? [{ label: '📅 Schedule', href: '#schedule' }] : []),
     ...(livestreamContent.enabled ? [{ label: '🔴 Live', href: '#livestream' }] : []),
+    ...(darshanContent.enabled ? [{ label: '🙏 Darshan', href: '#darshan' }] : []),
+    { label: 'Gallery', href: '#gallery' },
+    { label: 'Contact', href: '#contact' },
   ]
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 60)
-      const sections = navLinks.map((l) => l.href.replace('#', ''))
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id)
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActiveSection(id)
+      if (programmaticScrollRef.current) return
+      // Sort by actual DOM position — navLinks order ≠ page order (e.g. Live is appended last)
+      const sections = navLinks
+        .map((l) => ({ id: l.href.replace('#', ''), el: document.getElementById(l.href.replace('#', '')) }))
+        .filter((s): s is { id: string; el: HTMLElement } => s.el !== null)
+        .sort((a, b) => a.el.offsetTop - b.el.offsetTop)
+      const nearBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80
+      if (nearBottom) {
+        setActiveSection(sections[sections.length - 1].id)
+        return
+      }
+      for (const s of [...sections].reverse()) {
+        if (window.scrollY >= s.el.offsetTop - 120) {
+          setActiveSection(s.id)
           break
         }
       }
@@ -36,7 +57,16 @@ export function Navigation({ onOpenSeva, bannerShown = false }: Props) {
 
   // Scroll lock when mobile menu is open
   useEffect(() => {
-    if (!menuOpen) return
+    if (!menuOpen) {
+      // After body lock is released, scroll to pending target (if any)
+      const target = scrollTargetRef.current
+      scrollTargetRef.current = null
+      if (target) {
+        const el = document.getElementById(target)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }
+      return
+    }
     const scrollY = window.scrollY
     document.body.style.position = 'fixed'
     document.body.style.top = `-${scrollY}px`
@@ -52,10 +82,21 @@ export function Navigation({ onOpenSeva, bannerShown = false }: Props) {
   }, [menuOpen])
 
   const scrollTo = (href: string) => {
-    setMenuOpen(false)
     const id = href.replace('#', '')
-    const el = document.getElementById(id)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    setActiveSection(id)
+    // Block scroll handler from overriding while smooth scroll plays out
+    programmaticScrollRef.current = true
+    if (programmaticTimerRef.current) clearTimeout(programmaticTimerRef.current)
+    programmaticTimerRef.current = setTimeout(() => {
+      programmaticScrollRef.current = false
+    }, 1200)
+    if (menuOpen) {
+      scrollTargetRef.current = id
+      setMenuOpen(false)
+    } else {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   const bannerOffset = bannerShown ? 40 : 0
