@@ -15,12 +15,15 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
       style={{ opacity: fading ? 0 : 1, transition: 'opacity 0.4s ease', pointerEvents: fading ? 'none' : 'all' }}
     >
       <div className="text-center select-none">
-        <div
-          className="font-cinzel text-[96px] leading-none text-gold-400 mb-6"
-          style={{ textShadow: '0 0 60px rgba(212,175,55,0.7)', animation: 'pulse 1.5s ease-in-out infinite' }}
-        >
-          ॐ
-        </div>
+        <img
+          src="/logo.svg"
+          alt="Round Ramalayam Youth"
+          className="w-44 h-44 mx-auto mb-6"
+          style={{
+            filter: 'drop-shadow(0 0 28px rgba(212,175,55,0.75)) drop-shadow(0 0 8px rgba(232,100,10,0.4))',
+            animation: 'pulse 2s ease-in-out infinite',
+          }}
+        />
         <p className="font-cinzel text-xl font-bold text-ivory-200 tracking-[0.2em] mb-1">
           Round Ramalayam Youth
         </p>
