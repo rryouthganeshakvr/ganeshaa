@@ -17,7 +17,25 @@ export function Gallery() {
   const activeLightboxItem = lightbox !== null ? allItems.find((i) => i.id === lightbox) : null
   const currentIndex = lightbox !== null ? allItems.findIndex(i => i.id === lightbox) : -1
 
-  // Escape key + scroll lock
+  // Scroll lock — only re-runs when lightbox opens/closes, not on image navigation
+  const isOpen = lightbox !== null
+  useEffect(() => {
+    if (!isOpen) return
+    const scrollY = window.scrollY
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      document.body.style.overflow = ''
+      window.scrollTo(0, scrollY)
+    }
+  }, [isOpen])
+
+  // Keyboard navigation — separate so scroll lock isn't affected
   useEffect(() => {
     if (lightbox === null) return
     const onKey = (e: KeyboardEvent) => {
@@ -26,11 +44,7 @@ export function Gallery() {
       if (e.key === 'ArrowRight') setLightbox(allItems[(currentIndex + 1) % allItems.length].id)
     }
     document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
+    return () => document.removeEventListener('keydown', onKey)
   }, [lightbox, currentIndex, allItems])
 
   const goPrev = (e: React.MouseEvent) => {

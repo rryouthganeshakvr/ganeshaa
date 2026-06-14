@@ -172,68 +172,69 @@ export function Hero({ onOpenSeva }: { onOpenSeva?: () => void }) {
       <FloatingDeco delay={0.8} x="90%" y="65%" size={40} idx={3} />
       <FloatingDeco delay={2}   x="45%" y="88%" size={24} idx={4} />
 
-      {/* Top badges row */}
-      <div className="absolute top-[72px] sm:top-[76px] left-2 right-2 sm:left-6 sm:right-6 z-20 flex items-center justify-between gap-2">
-        {/* Left: Brand */}
+      {/* Top badges — hidden on mobile, side-by-side on sm+ */}
+      <div className="hidden sm:flex absolute sm:top-[76px] sm:left-6 sm:right-6 z-20 items-center justify-between gap-2">
+
+        {/* Brand badge */}
         <motion.div
-          initial={{ opacity: 0, x: -24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
-          className="flex flex-1 sm:flex-none items-center gap-1.5 sm:gap-2.5 glass-gold px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl sm:w-[242px]"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          className="flex items-center gap-2.5 sm:gap-3 glass-gold px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl sm:w-[242px]"
           style={{ boxShadow: '0 0 20px rgba(212,175,55,0.15)' }}
         >
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-[10px] sm:text-sm flex-shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-xs sm:text-sm flex-shrink-0">
             ॐ
           </div>
           <div className="min-w-0">
-            <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide truncate">
+            <p className="font-cinzel font-bold text-gold-400 text-xs sm:text-sm leading-tight tracking-wide truncate">
               Round Ramalayam Youth
             </p>
-            <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest">
+            <p className="font-inter text-ivory-600 text-[10px] sm:text-[10px] tracking-widest">
               KOVVUR · EST. 2004
             </p>
           </div>
         </motion.div>
 
-        {/* Right: Countdown / Festival active badge */}
-        {(festivalState === 'countdown' && countdown) || festivalState === 'active' ? (
+        {/* Countdown / Festival badge */}
+        {((festivalState === 'countdown' && countdown) || festivalState === 'active') && (
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-1 sm:flex-none items-center gap-1.5 sm:gap-2.5 glass-gold px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl sm:w-[242px]"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.55, ease: [0.4, 0, 0.2, 1] }}
+            className="flex items-center gap-2.5 sm:gap-3 glass-gold px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl sm:w-[242px]"
             style={{ boxShadow: '0 0 20px rgba(212,175,55,0.15)' }}
           >
-            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-[10px] sm:text-sm flex-shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gold-400 to-saffron-600 flex items-center justify-center text-dark-500 font-bold text-xs sm:text-sm flex-shrink-0">
               {festivalState === 'active' ? '🎉' : '⏳'}
             </div>
             <div className="min-w-0">
               {festivalState === 'active' ? (
                 <>
-                  <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide">
+                  <p className="font-cinzel font-bold text-gold-400 text-xs sm:text-sm leading-tight tracking-wide">
                     Celebrations!
                   </p>
-                  <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest uppercase">
+                  <p className="font-inter text-ivory-600 text-[10px] tracking-widest uppercase">
                     Day {festivalDay} of {totalFestivalDays}
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="font-cinzel font-bold text-gold-400 text-[8px] sm:text-sm leading-tight tracking-wide tabular-nums">
+                  <p className="font-cinzel font-bold text-gold-400 text-xs sm:text-sm leading-tight tracking-wide tabular-nums">
                     {countdown!.days}d · {String(countdown!.hours).padStart(2, '0')}h
                   </p>
-                  <p className="font-inter text-ivory-600 text-[6px] sm:text-[10px] tracking-widest uppercase">
+                  <p className="font-inter text-ivory-600 text-[10px] tracking-widest uppercase">
                     To Chaturthi
                   </p>
                 </>
               )}
             </div>
           </motion.div>
-        ) : null}
+        )}
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 container-custom px-4 md:px-8 text-center pt-28">
+      <div className="relative z-10 container-custom px-4 md:px-8 text-center pt-24 sm:pt-28">
         <motion.div
           variants={staggerContainer}
           initial="hidden"

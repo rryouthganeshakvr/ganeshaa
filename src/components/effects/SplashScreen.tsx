@@ -27,6 +27,9 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
         <p className="font-inter text-ivory-600 text-xs tracking-[0.5em] uppercase mb-8">
           Kovvur · Est. 2004
         </p>
+        <p className="font-cinzel text-xl font-bold text-ivory-200 tracking-[0.2em] mb-1">
+          A Legacy of Devotion & Celebration
+        </p>
         <div className="w-48 h-px bg-gold-900/40 rounded-full mx-auto overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-gold-500 to-saffron-500 rounded-full origin-left"

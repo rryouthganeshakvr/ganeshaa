@@ -8,6 +8,7 @@ import { About } from './components/sections/About'
 import { Teachings } from './components/sections/Teachings'
 import { Events } from './components/sections/Events'
 import { Schedule } from './components/sections/Schedule'
+import { LiveStream } from './components/sections/LiveStream'
 import { Gallery } from './components/sections/Gallery'
 import { SevaModal } from './components/sections/SevaModal'
 import { Testimonials } from './components/sections/Testimonials'
@@ -20,6 +21,9 @@ import { SplashScreen } from './components/effects/SplashScreen'
 import { FestivalBlast } from './components/effects/FestivalBlast'
 import { AnnouncementBanner } from './components/ui/AnnouncementBanner'
 import { BackToTop } from './components/ui/BackToTop'
+import { AudioToggle } from './components/ui/AudioToggle'
+import { SocialStrip } from './components/ui/SocialStrip'
+import { Darshan } from './components/sections/Darshan'
 
 function App() {
   const [sevaOpen, setSevaOpen] = useState(false)
@@ -35,7 +39,7 @@ function App() {
 
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: splashDone ? 1 : 0 }}
         transition={{ duration: 0.6 }}
         className="relative bg-dark-500 text-ivory-300 min-h-screen"
       >
@@ -55,6 +59,8 @@ function App() {
           <Teachings />
           <Events />
           <Schedule />
+          <LiveStream />
+          <Darshan />
           <Gallery />
           <Testimonials />
           <Contact />
@@ -63,6 +69,8 @@ function App() {
         <Footer />
 
         <SevaModal open={sevaOpen} onClose={() => setSevaOpen(false)} />
+        <SocialStrip />
+        <AudioToggle />
         <BackToTop />
       </motion.div>
     </>

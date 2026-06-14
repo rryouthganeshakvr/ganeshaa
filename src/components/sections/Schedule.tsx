@@ -26,13 +26,13 @@ export function Schedule() {
           subtitle={scheduleContent.subtitle}
         />
 
-        {/* Day tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+        {/* Day tabs — scrollable on mobile */}
+        <div className="flex gap-3 mb-10 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible scrollbar-none px-1">
           {scheduleContent.days.map((d, i) => (
             <button
               key={i}
               onClick={() => setActiveDay(i)}
-              className={`px-5 py-2.5 rounded-2xl font-cinzel text-sm tracking-wider transition-all duration-300 ${
+              className={`flex-shrink-0 px-5 py-2.5 rounded-2xl font-cinzel text-sm tracking-wider transition-all duration-300 ${
                 activeDay === i
                   ? 'bg-gradient-to-r from-gold-500 to-saffron-600 text-dark-500 font-bold shadow-gold-sm'
                   : 'glass text-ivory-500 hover:text-gold-400 hover:border-gold-500/30'

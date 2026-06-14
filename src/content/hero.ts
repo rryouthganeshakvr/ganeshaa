@@ -4,7 +4,7 @@ export const heroContent = {
   titleHighlight: 'Kovvur',
   subtitle: '21 Years of Devotion & Celebration',
   description:
-    'A community bound by faith, united in service — celebrating Vinayaka Chaturthi with love, bhajans, and blessings since 2004.',
+    'A legacy of devotion, a celebration of unity, and a spirit of selfless service, Round Ramalayam Youth has been bringing people together, honoring traditions, and creating lasting impact since 2004.',
   primaryCta: {
     label: 'Join Celebrations',
     href: '#events',
