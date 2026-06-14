@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "node scripts/sync-gallery.mjs && vite",
+    "build": "node scripts/sync-gallery.mjs && tsc && vite build",
+    "preview": "vite preview",
+    "gallery:sync": "node scripts/sync-gallery.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",

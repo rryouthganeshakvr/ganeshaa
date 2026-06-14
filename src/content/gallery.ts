@@ -5,6 +5,15 @@ export const galleryContent = {
   subtitle: 'Glimpses from our celebration, procession, and grand finale.',
   items: [
     {
+      id: 17,
+      title: 'Idol Pandal Full',
+      category: 'Festival',
+      aspect: 'wide',
+      src: '/images/idol-pandal-full.jpg',
+      gradient: 'from-pink-900 via-rose-800 to-orange-900',
+      placeholder: '🎊',
+    },
+    {
       id: 1,
       title: 'The Grand Idol',
       category: 'Festival',

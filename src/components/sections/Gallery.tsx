@@ -3,15 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { galleryContent } from '../../content/gallery'
 import { SectionTitle } from '../ui/SectionTitle'
 import { staggerContainer, fadeInUp } from '../../utils/animations'
+import { GalleryModal } from './GalleryModal'
+
+const PREVIEW_LIMIT = 15
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const filtered =
     activeCategory === 'All'
       ? galleryContent.items
       : galleryContent.items.filter((item) => item.category === activeCategory)
+
+  const previewItems = filtered.slice(0, PREVIEW_LIMIT)
+  const hasMore = galleryContent.items.length > PREVIEW_LIMIT
 
   const allItems = galleryContent.items
   const activeLightboxItem = lightbox !== null ? allItems.find((i) => i.id === lightbox) : null
@@ -96,10 +103,10 @@ export function Gallery() {
           ))}
         </motion.div>
 
-        {/* Masonry grid */}
+        {/* Masonry grid — first 15 only */}
         <motion.div layout className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
           <AnimatePresence>
-            {filtered.map((item, i) => (
+            {previewItems.map((item, i) => (
               <motion.div
                 key={item.id}
                 layout
@@ -142,7 +149,38 @@ export function Gallery() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* View All button */}
+        {hasMore && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col items-center gap-3 mt-10"
+          >
+            <p className="text-ivory-600 text-sm font-inter">
+              Showing {previewItems.length} of {galleryContent.items.length} photos
+            </p>
+            <button
+              onClick={() => setModalOpen(true)}
+              className="btn-primary flex items-center gap-3 text-sm"
+            >
+              <span>View All {galleryContent.items.length} Photos</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2 8h12M8 2l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </motion.div>
+        )}
       </div>
+
+      {/* Full gallery modal */}
+      <GalleryModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialCategory={activeCategory}
+      />
 
       {/* Lightbox */}
       <AnimatePresence>
