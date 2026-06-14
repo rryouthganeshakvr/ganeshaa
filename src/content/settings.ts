@@ -10,8 +10,8 @@ export const settings = {
   social: {
     instagram: 'https://www.instagram.com/ganeshaa_kovvur',
     instagramHandle: '@ganeshaa_kovvur',
-    youtube: 'https://www.youtube.com/@RRYOUTHGANESHAKVR',
-    youtubeHandle: 'RRYOUTHGANESHAKVR',
+    youtube: 'https://www.youtube.com/@ROUNDRAMALAYAMYOUTHGANESHA',
+    youtubeHandle: 'ROUNDRAMALAYAMYOUTHGANESHAKVR', 
     email: 'rryouthganeshakvr@gmail.com',
   },
   contact: {
